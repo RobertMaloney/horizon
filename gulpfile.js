@@ -1,6 +1,7 @@
 var uglify = require('gulp-uglify'),
     minifyCSS = require('gulp-minify-css'),
-    react = require('gulp-react');
+    react = require('gulp-react'),
+    electronRun = require('gulp-run-electron');
 
 var gulp = require('gulp');
 
@@ -32,4 +33,11 @@ gulp.task('build:copy', function() {
     .pipe(gulp.dest('./build/'))
 });
 
+gulp.task('test', function() {
+  return gulp.src('./build/')
+    .pipe(electronRun());
+});
+
 gulp.task('build', ['minify:js', 'minify:css', 'build:copy']);
+
+gulp.task('default', ['build', 'test']);
