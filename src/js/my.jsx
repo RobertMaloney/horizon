@@ -4,8 +4,19 @@ var apps = ["C:\\cygwin64\\bin\\mintty.exe",
 var shell = require('shell');
 
 var Runnable = React.createClass({
+  getInitialState: function() {
+    return {
+      mouseover: false
+    };
+  },
   handleClick: function() {
     shell.openExternal(apps[this.props.urlid]);
+  },
+  onMouseOver: function() {
+    this.setState({mouseover: true});
+  },
+  onMouseOut: function() {
+    this.setState({mouseover: false});
   },
   render: function() {
     var style = {
@@ -14,11 +25,11 @@ var Runnable = React.createClass({
       left: 10 + 45*this.props.urlid,
       width: 40,
       height: 40,
-      backgroundColor: 'black'
+      backgroundColor: (this.state.mouseover) ? 'grey' : 'black'
     };
 
     return (
-      <div onClick={this.handleClick} style={style}></div>
+      <div onClick={this.handleClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} style={style}></div>
     );
   }
 });
@@ -30,7 +41,7 @@ var Panel = React.createClass({
     runnables.push(Runnable({urlid:1}));
     return (
       <div>{runnables}</div>
-    )
+    );
   }
 });
 
