@@ -32,6 +32,7 @@ body {
 
 .menuButton {
   padding: 5px;
+  cursor: pointer;
 }
 
 .panel {
@@ -53,6 +54,7 @@ body {
   word-wrap: break-word;
   max-width: 64px;
   max-height: 64px;
+  cursor: pointer;
 }
 
 .runnable:hover {
