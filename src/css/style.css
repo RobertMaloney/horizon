@@ -8,19 +8,18 @@ html {
 }
 
 ul {
-  display: inline;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-li {
-  display: inline;
+.panelLabel, ul, li {
+  display: inline-block;
 }
 
 .panelLabel {
-  display: inline;
-  padding-right: 15px;
+  width: 100px;
+  margin: 0px;
 }
 
 body {

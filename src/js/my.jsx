@@ -45,10 +45,11 @@ var Runnable = React.createClass({
 var Panel = React.createClass({
   render: function() {
     var runnables = [];
-    var plinks = this.props.panels[this.props.id].links;
-    for (var i = 0; i < plinks.length; ++i)
-      runnables.push(<Runnable uri={plinks[i].uri}/>);
-
+    if (this.props.id > -1) {
+      var plinks = this.props.panels[this.props.id].links;
+      for (var i = 0; i < plinks.length; ++i)
+        runnables.push(<Runnable uri={plinks[i].uri}/>);
+    }
     return (
       <div>{runnables}</div>
     );
@@ -86,9 +87,11 @@ var Nav = React.createClass({
 var Header = React.createClass({
   render: function() {
     var _class = "panelLabel";
+    var _name = (this.props.id < 0) ? 'Horizon' : this.props.panels[this.props.id].name.capFirst();
+
     return (
       <div>
-        <h1 className={_class}>Horizon</h1>
+        <h1 className={_class}>{_name}</h1>
         <Nav panels={this.props.panels} id={this.props.id} onSelectPanel={this.props.onSelectPanel}/>
       </div>
     );
@@ -98,7 +101,7 @@ var Header = React.createClass({
 var Container = React.createClass({
   getInitialState: function() {
     return {
-      id: 0,
+      id: -1,
       panels: this.props.panels
     };
   },

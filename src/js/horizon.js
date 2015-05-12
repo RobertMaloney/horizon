@@ -15,3 +15,7 @@ PanelData.prototype.removeAt = function(id) {
   this.links.splice(id, 1);
   return true;
 }
+
+String.prototype.capFirst = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
