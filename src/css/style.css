@@ -34,12 +34,39 @@ body {
   padding: 5px;
 }
 
+.panel {
+  display: table;
+  border-spacing: 5px;
+}
+
 .runnable {
   width: 64px;
   height: 64px;
   margin-right: 5px;
   margin-bottom: 5px;
   display: inline-block;
+  background-color: lightgrey;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  overflow: hidden;
+  word-wrap: break-word;
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.runnable:hover {
+  background-color: grey;
+}
+
+.appName {
+  display: none;
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.runnable:hover .appName {
+  display: block;
 }
 
 .selected {

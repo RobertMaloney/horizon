@@ -25,19 +25,14 @@ var Runnable = React.createClass({displayName: "Runnable",
   onMouseOut: function() {
     this.setState({mouseover: false});
   },
-  deleteMe: function() {
-    this.props.onDelete();
-  },
   render: function() {
-    var style = {
-      backgroundColor: (this.state.mouseover) ? 'grey' : 'black'
-    };
     var _class = "runnable";
 
     return (
-      React.createElement("div", {onClick: this.handleClick, onMouseOver: this.onMouseOver, 
-        onMouseOut: this.onMouseOut, onContextMenu: this.deleteMe, 
-        style: style, className: _class})
+      React.createElement("div", {onClick: this.handleClick, 
+        onMouseOut: this.onMouseOut, className: _class}, 
+        React.createElement("div", {className: "appName"}, this.props.name)
+      )
     );
   }
 });
@@ -48,10 +43,10 @@ var Panel = React.createClass({displayName: "Panel",
     if (this.props.id > -1) {
       var plinks = this.props.panels[this.props.id].links;
       for (var i = 0; i < plinks.length; ++i)
-        runnables.push(React.createElement(Runnable, {uri: plinks[i].uri}));
+        runnables.push(React.createElement(Runnable, {name: plinks[i].name, uri: plinks[i].uri}));
     }
     return (
-      React.createElement("div", null, runnables)
+      React.createElement("div", {className: "panel"}, runnables)
     );
   }
 });
@@ -125,6 +120,7 @@ var Container = React.createClass({displayName: "Container",
 
 var _panels = [new PanelData('apps'), new PanelData('games')];
 _panels[0].addLink({name: 'cygwin64', uri: apps[0]});
+_panels[0].addLink({name: 'pictureeeeeeeeeeeeeeeeeeeeeeee', uri: 'C:/Users/Rob/Desktop/Profile.png'});
 _panels[1].addLink({name: 'atom', uri: apps[1]});
 
 React.render(React.createElement(Container, {panels: _panels}), document.getElementById("main"));

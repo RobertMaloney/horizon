@@ -16,6 +16,16 @@ PanelData.prototype.removeAt = function(id) {
   return true;
 }
 
+// captializes first letter of a String
 String.prototype.capFirst = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+// Prevent double click selection
+document
+  .getElementById('main')
+  .addEventListener('mousedown', function(e)
+  {
+    e.preventDefault();
+  },
+  false);
