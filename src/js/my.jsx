@@ -18,9 +18,11 @@ var Runnable = React.createClass({
   onMouseOut: function() {
     this.setState({mouseover: false});
   },
+  deleteMe: function() {
+    this.props.onDelete();
+  },
   render: function() {
     var style = {
-      position: 'absolute',
       top: 10,
       left: 10 + 45*this.props.urlid,
       width: 40,
@@ -29,20 +31,46 @@ var Runnable = React.createClass({
     };
 
     return (
-      <div onClick={this.handleClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} style={style}></div>
+      <div onClick={this.handleClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onContextMenu={this.deleteMe} style={style}></div>
     );
   }
 });
 
 var Panel = React.createClass({
-  render: function () {
+  onDelete: function(id) {
+    ids--;
+    this.setState({});
+  },
+  render: function() {
     var runnables = [];
-    runnables.push(Runnable({urlid:0}));
-    runnables.push(Runnable({urlid:1}));
+    var ids = 2;
+    for (var i = 0; i < ids; ++i)
+      runnables.push(Runnable({urlid:i, onDelete: this.onDelete}));
+
     return (
       <div>{runnables}</div>
     );
   }
 });
 
-React.render(<Panel />, document.getElementById('main'));
+var Nav = React.createClass({
+  getInitialState: function() {
+    return {
+      tabId: 0
+    }
+  },
+  render: function() {
+    var tabTitles = ["apps", "games"];
+    var tabs = [];
+    for (var i = 0; i < tabTitles.length; ++i)
+      tabs.push(
+        <li>{tabTitles[i]}</li>
+      );
+
+    return (
+      <ul>{tabs}</ul>
+    );
+  }
+});
+
+React.render(<Panel />, document.getElementById("main"));

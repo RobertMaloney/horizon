@@ -1,10 +1,10 @@
 {
-  "name": "mydock",
+  "name": "horizon",
   "version": "0.0.1",
   "description": "React desktop dock menu made with Electron",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RobertMaloney/mydock"
+    "url": "https://github.com/RobertMaloney/horizon"
   },
   "engines": {
     "node": "0.10.x"
