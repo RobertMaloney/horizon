@@ -1,0 +1,35 @@
+ul {
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+}
+
+.panelLabel {
+  display: inline;
+  padding-right: 15px;
+}
+
+body {
+  margin: 0px;
+}
+
+.container {
+  margin: 20px 50px;
+}
+
+.menuButton {
+  padding: 5px;
+}
+
+.runnable {
+  width: 64px;
+  height: 64px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}

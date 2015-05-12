@@ -1,3 +1,10 @@
+/**
+ * ReactJS Design
+ * The main container will hold the header and current panel. The default panel
+ * is the most recently used runnables. The header has a label for the currently
+ * selected panel, and tabs to switch between panels.
+ */
+
 var apps = ["C:\\cygwin64\\bin\\mintty.exe",
             "C:\\Users\\Rob\\AppData\\Local\\atom\\app-0.198.0\\atom.exe"];
 
@@ -25,13 +32,14 @@ var Runnable = React.createClass({
     var style = {
       top: 10,
       left: 10 + 45*this.props.urlid,
-      width: 40,
-      height: 40,
       backgroundColor: (this.state.mouseover) ? 'grey' : 'black'
     };
+    var _class = "runnable";
 
     return (
-      <div onClick={this.handleClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onContextMenu={this.deleteMe} style={style}></div>
+      <div onClick={this.handleClick} onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut} onContextMenu={this.deleteMe}
+        style={style} className={_class}></div>
     );
   }
 });
@@ -62,9 +70,10 @@ var Nav = React.createClass({
   render: function() {
     var tabTitles = ["apps", "games"];
     var tabs = [];
+    var _buttonClass = "menuButton";
     for (var i = 0; i < tabTitles.length; ++i)
       tabs.push(
-        <li>{tabTitles[i]}</li>
+        <li className={_buttonClass}>{tabTitles[i]}</li>
       );
 
     return (
@@ -73,4 +82,29 @@ var Nav = React.createClass({
   }
 });
 
-React.render(<Panel />, document.getElementById("main"));
+var Header = React.createClass({
+  render: function() {
+    var _class = "panelLabel";
+    return (
+      <div>
+        <h1 className={_class}>Horizon</h1>
+        <Nav />
+      </div>
+    );
+  }
+})
+
+var Container = React.createClass({
+  render: function() {
+    var _class = "container";
+
+    return (
+      <div className={_class}>
+        <Header />
+        <Panel />
+      </div>
+    )
+  }
+});
+
+React.render(<Container />, document.getElementById("main"));
