@@ -17,7 +17,7 @@ var Runnable = React.createClass({
     };
   },
   handleClick: function() {
-    shell.openExternal(apps[this.props.urlid]);
+    shell.openExternal(this.props.uri);
   },
   onMouseOver: function() {
     this.setState({mouseover: true});
@@ -30,8 +30,6 @@ var Runnable = React.createClass({
   },
   render: function() {
     var style = {
-      top: 10,
-      left: 10 + 45*this.props.urlid,
       backgroundColor: (this.state.mouseover) ? 'grey' : 'black'
     };
     var _class = "runnable";
@@ -45,15 +43,11 @@ var Runnable = React.createClass({
 });
 
 var Panel = React.createClass({
-  onDelete: function(id) {
-    ids--;
-    this.setState({});
-  },
   render: function() {
     var runnables = [];
-    var ids = 2;
-    for (var i = 0; i < ids; ++i)
-      runnables.push(Runnable({urlid:i, onDelete: this.onDelete}));
+    var plinks = this.props.panels[this.props.id].links;
+    for (var i = 0; i < plinks.length; ++i)
+      runnables.push(<Runnable uri={plinks[i].uri}/>);
 
     return (
       <div>{runnables}</div>
@@ -64,26 +58,23 @@ var Panel = React.createClass({
 var Nav = React.createClass({
   getInitialState: function() {
     return {
-      tabId: -1
+      panels: this.props.panels
     }
   },
-  selectTab: function(id) {
-    this.setState({tabId: id});
-  },
   render: function() {
-    var tabTitles = ["apps", "games"];
+    var data = this.state.panels;
     var tabs = [];
     var _buttonClass = "menuButton";
     var _selectedButton = "menuButton selected";
 
-    for (var i = 0; i < tabTitles.length; ++i)
-      if (i == this.state.tabId)
+    for (var i = 0; i < data.length; ++i)
+      if (i == this.props.id)
         tabs.push(
-          <li className={_selectedButton} onClick={this.selectTab.bind(this,i)}>{tabTitles[i]}</li>
+          <li className={_selectedButton}>{data[i].name}</li>
         );
       else
         tabs.push(
-          <li className={_buttonClass} onClick={this.selectTab.bind(this,i)}>{tabTitles[i]}</li>
+          <li className={_buttonClass} onClick={this.props.onSelectPanel.bind(this,i)}>{data[i].name}</li>
         );
 
     return (
@@ -98,23 +89,39 @@ var Header = React.createClass({
     return (
       <div>
         <h1 className={_class}>Horizon</h1>
-        <Nav />
+        <Nav panels={this.props.panels} id={this.props.id} onSelectPanel={this.props.onSelectPanel}/>
       </div>
     );
   }
 })
 
 var Container = React.createClass({
+  getInitialState: function() {
+    return {
+      id: 0,
+      panels: this.props.panels
+    };
+  },
+  onSelectPanel: function(new_id) {
+    this.setState({
+      id: new_id,
+      panels: this.state.panels
+    });
+  },
   render: function() {
     var _class = "container";
 
     return (
       <div className={_class}>
-        <Header />
-        <Panel />
+        <Header panels={this.state.panels} id={this.state.id} onSelectPanel={this.onSelectPanel}/>
+        <Panel panels={this.state.panels} id={this.state.id}/>
       </div>
     )
   }
 });
 
-React.render(<Container />, document.getElementById("main"));
+var _panels = [new PanelData('apps'), new PanelData('games')];
+_panels[0].addLink({name: 'cygwin64', uri: apps[0]});
+_panels[1].addLink({name: 'atom', uri: apps[1]});
+
+React.render(<Container panels={_panels}/>, document.getElementById("main"));

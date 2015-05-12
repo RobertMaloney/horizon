@@ -1,0 +1,1 @@
+var PanelData=function(n){this.name=n,this.links=[]};PanelData.prototype.addLink=function(n){return this.links.push({name:n.name,uri:n.uri}),!0},PanelData.prototype.removeAt=function(n){return n>=this.links.length?!1:0>n?!1:(this.links.splice(n,1),!0)};

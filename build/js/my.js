@@ -1,1 +1,127 @@
-var apps=["C:\\cygwin64\\bin\\mintty.exe","C:\\Users\\Rob\\AppData\\Local\\atom\\app-0.198.0\\atom.exe"],shell=require("shell"),Runnable=React.createClass({displayName:"Runnable",getInitialState:function(){return{mouseover:!1}},handleClick:function(){shell.openExternal(apps[this.props.urlid])},onMouseOver:function(){this.setState({mouseover:!0})},onMouseOut:function(){this.setState({mouseover:!1})},deleteMe:function(){this.props.onDelete()},render:function(){var e={top:10,left:10+45*this.props.urlid,backgroundColor:this.state.mouseover?"grey":"black"},t="runnable";return React.createElement("div",{onClick:this.handleClick,onMouseOver:this.onMouseOver,onMouseOut:this.onMouseOut,onContextMenu:this.deleteMe,style:e,className:t})}}),Panel=React.createClass({displayName:"Panel",onDelete:function(e){ids--,this.setState({})},render:function(){for(var e=[],t=2,a=0;t>a;++a)e.push(Runnable({urlid:a,onDelete:this.onDelete}));return React.createElement("div",null,e)}}),Nav=React.createClass({displayName:"Nav",getInitialState:function(){return{tabId:-1}},selectTab:function(e){this.setState({tabId:e})},render:function(){for(var e=["apps","games"],t=[],a="menuButton",n="menuButton selected",l=0;l<e.length;++l)t.push(l==this.state.tabId?React.createElement("li",{className:n,onClick:this.selectTab.bind(this,l)},e[l]):React.createElement("li",{className:a,onClick:this.selectTab.bind(this,l)},e[l]));return React.createElement("ul",null,t)}}),Header=React.createClass({displayName:"Header",render:function(){var e="panelLabel";return React.createElement("div",null,React.createElement("h1",{className:e},"Horizon"),React.createElement(Nav,null))}}),Container=React.createClass({displayName:"Container",render:function(){var e="container";return React.createElement("div",{className:e},React.createElement(Header,null),React.createElement(Panel,null))}});React.render(React.createElement(Container,null),document.getElementById("main"));
+/**
+ * ReactJS Design
+ * The main container will hold the header and current panel. The default panel
+ * is the most recently used runnables. The header has a label for the currently
+ * selected panel, and tabs to switch between panels.
+ */
+
+var apps = ["C:\\cygwin64\\bin\\mintty.exe",
+            "C:\\Users\\Rob\\AppData\\Local\\atom\\app-0.198.0\\atom.exe"];
+
+var shell = require('shell');
+
+var Runnable = React.createClass({displayName: "Runnable",
+  getInitialState: function() {
+    return {
+      mouseover: false
+    };
+  },
+  handleClick: function() {
+    shell.openExternal(this.props.uri);
+  },
+  onMouseOver: function() {
+    this.setState({mouseover: true});
+  },
+  onMouseOut: function() {
+    this.setState({mouseover: false});
+  },
+  deleteMe: function() {
+    this.props.onDelete();
+  },
+  render: function() {
+    var style = {
+      backgroundColor: (this.state.mouseover) ? 'grey' : 'black'
+    };
+    var _class = "runnable";
+
+    return (
+      React.createElement("div", {onClick: this.handleClick, onMouseOver: this.onMouseOver, 
+        onMouseOut: this.onMouseOut, onContextMenu: this.deleteMe, 
+        style: style, className: _class})
+    );
+  }
+});
+
+var Panel = React.createClass({displayName: "Panel",
+  render: function() {
+    var runnables = [];
+    var plinks = this.props.panels[this.props.id].links;
+    for (var i = 0; i < plinks.length; ++i)
+      runnables.push(React.createElement(Runnable, {uri: plinks[i].uri}));
+
+    return (
+      React.createElement("div", null, runnables)
+    );
+  }
+});
+
+var Nav = React.createClass({displayName: "Nav",
+  getInitialState: function() {
+    return {
+      panels: this.props.panels
+    }
+  },
+  render: function() {
+    var data = this.state.panels;
+    var tabs = [];
+    var _buttonClass = "menuButton";
+    var _selectedButton = "menuButton selected";
+
+    for (var i = 0; i < data.length; ++i)
+      if (i == this.props.id)
+        tabs.push(
+          React.createElement("li", {className: _selectedButton}, data[i].name)
+        );
+      else
+        tabs.push(
+          React.createElement("li", {className: _buttonClass, onClick: this.props.onSelectPanel.bind(this,i)}, data[i].name)
+        );
+
+    return (
+      React.createElement("ul", null, tabs)
+    );
+  }
+});
+
+var Header = React.createClass({displayName: "Header",
+  render: function() {
+    var _class = "panelLabel";
+    return (
+      React.createElement("div", null, 
+        React.createElement("h1", {className: _class}, "Horizon"), 
+        React.createElement(Nav, {panels: this.props.panels, id: this.props.id, onSelectPanel: this.props.onSelectPanel})
+      )
+    );
+  }
+})
+
+var Container = React.createClass({displayName: "Container",
+  getInitialState: function() {
+    return {
+      id: 0,
+      panels: this.props.panels
+    };
+  },
+  onSelectPanel: function(new_id) {
+    this.setState({
+      id: new_id,
+      panels: this.state.panels
+    });
+  },
+  render: function() {
+    var _class = "container";
+
+    return (
+      React.createElement("div", {className: _class}, 
+        React.createElement(Header, {panels: this.state.panels, id: this.state.id, onSelectPanel: this.onSelectPanel}), 
+        React.createElement(Panel, {panels: this.state.panels, id: this.state.id})
+      )
+    )
+  }
+});
+
+var _panels = [new PanelData('apps'), new PanelData('games')];
+_panels[0].addLink({name: 'cygwin64', uri: apps[0]});
+_panels[1].addLink({name: 'atom', uri: apps[1]});
+
+React.render(React.createElement(Container, {panels: _panels}), document.getElementById("main"));

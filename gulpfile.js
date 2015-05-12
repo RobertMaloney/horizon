@@ -20,7 +20,7 @@ gulp.task('minify:js', function() {
   // jsx and uglify react
   gulp.src('./src/js/**/*.jsx')
     .pipe(react())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('./build/js/'))
 
   // uglify main.js
