@@ -1,1 +1,1 @@
-.panelLabel,li,ul{display:inline}body,ul{margin:0}ul{list-style-type:none;padding:0}.panelLabel{padding-right:15px}.container{margin:20px 50px}.menuButton{padding:5px}.runnable{width:64px;height:64px}
+.panelLabel,li,ul{display:inline}body,ul{margin:0}@font-face{font-family:defaultFont;src:url(de_luxe.ttf)}html{font-family:defaultFont}ul{list-style-type:none;padding:0}.panelLabel{padding-right:15px}.container{margin:20px 50px}.menuButton{padding:5px}.runnable{width:64px;height:64px;margin-right:5px;margin-bottom:5px;display:inline-block}.selected{background-color:green}

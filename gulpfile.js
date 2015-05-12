@@ -5,11 +5,16 @@ var uglify = require('gulp-uglify'),
 
 var gulp = require('gulp');
 
-gulp.task('minify:css', function() {
+gulp.task('minify:css', ['fontcopy'], function() {
   return gulp.src('./src/css/**/*.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('./build/css/'))
 });
+
+gulp.task('fontcopy', function() {
+  return gulp.src('./src/css/**/*.ttf')
+    .pipe(gulp.dest('./build/css/'))
+})
 
 gulp.task('minify:js', function() {
   // jsx and uglify react
@@ -33,11 +38,11 @@ gulp.task('build:copy', function() {
     .pipe(gulp.dest('./build/'))
 });
 
-gulp.task('test', function() {
+gulp.task('test', ['build'], function() {
   return gulp.src('./build/')
     .pipe(electronRun());
 });
 
 gulp.task('build', ['minify:js', 'minify:css', 'build:copy']);
 
-gulp.task('default', ['build', 'test']);
+gulp.task('default', ['test']);

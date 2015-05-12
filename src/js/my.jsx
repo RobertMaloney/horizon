@@ -64,17 +64,27 @@ var Panel = React.createClass({
 var Nav = React.createClass({
   getInitialState: function() {
     return {
-      tabId: 0
+      tabId: -1
     }
+  },
+  selectTab: function(id) {
+    this.setState({tabId: id});
   },
   render: function() {
     var tabTitles = ["apps", "games"];
     var tabs = [];
     var _buttonClass = "menuButton";
+    var _selectedButton = "menuButton selected";
+
     for (var i = 0; i < tabTitles.length; ++i)
-      tabs.push(
-        <li className={_buttonClass}>{tabTitles[i]}</li>
-      );
+      if (i == this.state.tabId)
+        tabs.push(
+          <li className={_selectedButton} onClick={this.selectTab.bind(this,i)}>{tabTitles[i]}</li>
+        );
+      else
+        tabs.push(
+          <li className={_buttonClass} onClick={this.selectTab.bind(this,i)}>{tabTitles[i]}</li>
+        );
 
     return (
       <ul>{tabs}</ul>
