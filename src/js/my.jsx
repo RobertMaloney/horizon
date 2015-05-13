@@ -49,6 +49,7 @@ var Panel = React.createClass({
   },
   onDrop: function(evt) {
     this.props.panels[this.props.id].addFileByEvent(evt);
+    this.setState({dragged: false});
   },
   render: function() {
     var _style = {
