@@ -38,7 +38,22 @@ var Runnable = React.createClass({displayName: "Runnable",
 });
 
 var Panel = React.createClass({displayName: "Panel",
+  getInitialState: function() {
+    return {dragged: false};
+  },
+  onDrag: function(evt) {
+    if (evt.type == "dragover")
+      this.setState({dragged: true});
+    else
+      this.setState({dragged: false});
+  },
+  onDrop: function(evt) {
+    this.props.panels[this.props.id].addFileByEvent(evt);
+  },
   render: function() {
+    var _style = {
+      backgroundColor: (this.state.dragged) ? 'lightgrey' : 'transparent'
+    }
     var runnables = [];
     if (this.props.id > -1) {
       var plinks = this.props.panels[this.props.id].links;
@@ -46,7 +61,7 @@ var Panel = React.createClass({displayName: "Panel",
         runnables.push(React.createElement(Runnable, {name: plinks[i].name, uri: plinks[i].uri}));
     }
     return (
-      React.createElement("div", {className: "panel"}, runnables)
+      React.createElement("div", {className: "panel", style: _style, onDragOver: this.onDrag, onDragLeave: this.onDrag, onDrop: this.onDrop}, runnables)
     );
   }
 });
