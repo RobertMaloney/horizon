@@ -42,14 +42,19 @@ var Panel = React.createClass({
     return {dragged: false};
   },
   onDrag: function(evt) {
+    evt.dataTransfer.dropEffect = "link";
+    evt.stopPropagation();
+    evt.preventDefault();
     if (evt.type == "dragover")
       this.setState({dragged: true});
     else
       this.setState({dragged: false});
   },
   onDrop: function(evt) {
-    this.props.panels[this.props.id].addFileByEvent(evt);
-    this.setState({dragged: false});
+    var callstate = this.setState.bind(this,{dragged: false});
+    this.props.panels[this.props.id].addFileByEvent(evt, function (changed) {
+      if (changed) callstate();
+    });
   },
   render: function() {
     var _style = {
