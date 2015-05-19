@@ -9,6 +9,7 @@ var apps = ["C:\\cygwin64\\bin\\mintty.exe",
             "C:\\Users\\Rob\\AppData\\Local\\atom\\app-0.198.0\\atom.exe"];
 
 var shell = require('shell');
+var remote = require("remote");
 
 var Runnable = React.createClass({displayName: "Runnable",
   getInitialState: function() {
@@ -139,9 +140,14 @@ var Container = React.createClass({displayName: "Container",
   }
 });
 
+var _horizon = new Horizon();
+remote.getCurrentWindow().on('close', function() {
+  _horizon.save();
+});
+
 var _panels = [new PanelData('apps'), new PanelData('games')];
 _panels[0].addLink({name: 'cygwin64', uri: apps[0]});
 _panels[0].addLink({name: 'pictureeeeeeeeeeeeeeeeeeeeeeee', uri: 'C:/Users/Rob/Desktop/Profile.png'});
 _panels[1].addLink({name: 'atom', uri: apps[1]});
 
-React.render(React.createElement(Container, {panels: _panels}), document.getElementById("main"));
+React.render(React.createElement(Container, {panels: _horizon.panels}), document.getElementById("main"));
