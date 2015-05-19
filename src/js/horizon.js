@@ -24,6 +24,6 @@ Horizon.prototype.save = function() {
   var file = {};
   file.version = "0.0.1";
   file.panels = this.panels;
-  file = JSON.stringify(file, null, 4);
+  file = JSON.stringify(file, null, 2);
   fs.writeFileSync(configPath, file);
 }

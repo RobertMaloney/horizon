@@ -23,7 +23,8 @@ app.on('ready', function() {
     height: size.height/2,
     frame: false,
     "skip-taskbar": true,
-    resizable: false
+    resizable: false,
+    transparent: true
   });
 
   mainWindow.loadUrl('file://' + __dirname + '/main.html');

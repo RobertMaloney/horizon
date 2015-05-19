@@ -1,23 +1,23 @@
 {
-    "version": "0.0.1",
-    "panels": [
+  "version": "0.0.1",
+  "panels": [
+    {
+      "name": "apps",
+      "links": [
         {
-            "name": "apps",
-            "links": [
-                {
-                    "name": "cygwin64",
-                    "uri": "C:/cygwin64/bin/mintty.exe"
-                }
-            ]
-        },
-        {
-            "name": "games",
-            "links": [
-                {
-                    "name": "atom",
-                    "uri": "C:/Users/Rob/AppData/Local/atom/app-0.198.0/atom.exe"
-                }
-            ]
+          "name": "cygwin64",
+          "uri": "C:/cygwin64/bin/mintty.exe"
         }
-    ]
+      ]
+    },
+    {
+      "name": "games",
+      "links": [
+        {
+          "name": "atom",
+          "uri": "C:/Users/Rob/AppData/Local/atom/app-0.198.0/atom.exe"
+        }
+      ]
+    }
+  ]
 }
