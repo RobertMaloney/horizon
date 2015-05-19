@@ -1,5 +1,8 @@
 var fs = require("fs");
 var ws = require("./lib/windows-shortcuts/lib/windows-shortcuts.js");
+var remote = require("remote");
+var Menu = remote.require("menu");
+//var MenuItem = remote.require("menu-item");
 
 var PanelData = function(name) {
   this.name = name;
@@ -29,6 +32,23 @@ PanelData.prototype.addFileByEvent = function(evt, callback) {
       _AL(data);
     callback(!err);
   });
+}
+
+PanelData.prototype.makeContext = function(id, reset) {
+  var _delete = this.removeAt.bind(this,id);
+  var _action = function (arg) {
+    if (arg === "delete") {
+      _delete();
+    }
+    reset();
+  }
+  var menu = Menu.buildFromTemplate([
+    {
+      label: 'Delete',
+      click: _action.bind(this,"delete")
+    }
+  ]);
+  menu.popup(remote.getCurrentWindow());
 }
 
 // captializes first letter of a String

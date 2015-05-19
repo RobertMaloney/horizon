@@ -19,18 +19,15 @@ var Runnable = React.createClass({
   handleClick: function() {
     shell.openExternal(this.props.uri);
   },
-  onMouseOver: function() {
-    this.setState({mouseover: true});
-  },
-  onMouseOut: function() {
-    this.setState({mouseover: false});
+  onContext: function(evt) {
+    this.props.contextCallback(this.props.id);
   },
   render: function() {
     var _class = "runnable";
 
     return (
       <div onClick={this.handleClick}
-        onMouseOut={this.onMouseOut} className={_class}>
+        onContextMenu={this.onContext} className={_class}>
         <div className={"appName"}>{this.props.name}</div>
       </div>
     );
@@ -56,6 +53,9 @@ var Panel = React.createClass({
       if (changed) callstate();
     });
   },
+  onContext: function(id) {
+    this.props.panels[this.props.id].makeContext(id, this.setState.bind(this));
+  },
   render: function() {
     var _style = {
       backgroundColor: (this.state.dragged) ? 'lightgrey' : 'transparent'
@@ -64,7 +64,7 @@ var Panel = React.createClass({
     if (this.props.id > -1) {
       var plinks = this.props.panels[this.props.id].links;
       for (var i = 0; i < plinks.length; ++i)
-        runnables.push(<Runnable name={plinks[i].name} uri={plinks[i].uri}/>);
+        runnables.push(<Runnable id={i} contextCallback={this.onContext.bind(this)} name={plinks[i].name} uri={plinks[i].uri}/>);
     }
     return (
       <div className={"panel"} style={_style} onDragOver={this.onDrag} onDragLeave={this.onDrag} onDrop={this.onDrop}>{runnables}</div>
