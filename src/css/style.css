@@ -76,5 +76,5 @@ body {
 }
 
 .selected {
-  background-color: green;
+  opacity: 0.5;
 }
