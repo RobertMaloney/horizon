@@ -18,6 +18,12 @@ PanelData.prototype.removeAt = function(id) {
   if (id >= this.links.length) return false;
   if (id < 0) return false;
 
+  if (typeof this.links[id].imageuri !== "undefined") {
+    fs.unlink('build/' + this.links[id].imageuri, function(err) {
+      if (err) console.log("Delete failed.");
+    });
+  }
+
   this.links.splice(id, 1);
   return true;
 }
