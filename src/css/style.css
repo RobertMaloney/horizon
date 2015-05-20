@@ -81,3 +81,8 @@ body {
   opacity: 0.5;
   cursor: default;
 }
+
+.DIM64 {
+  width: 64px;
+  height: 64px;
+}

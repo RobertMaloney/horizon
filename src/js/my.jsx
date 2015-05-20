@@ -15,18 +15,25 @@ var Runnable = React.createClass({
     };
   },
   handleClick: function() {
-    shell.openItem(this.props.uri);
+    shell.openItem(this.props.data.uri);
   },
   onContext: function(evt) {
     this.props.contextCallback(this.props.id);
   },
   render: function() {
     var _class = "runnable";
+    var imageuri = this.props.data.imageuri;
+    var imageElement;
+    if (typeof imageuri !== "undefined")
+      imageElement = <img className={"DIM64"} src={this.props.data.imageuri}></img>;
+    else
+      imageElement = <div></div>;
 
     return (
       <div onClick={this.handleClick}
         onContextMenu={this.onContext} className={_class}>
-        <div className={"appName"}>{this.props.name}</div>
+        {imageElement}
+        <div className={"appName"}>{this.props.data.name}</div>
       </div>
     );
   }
@@ -62,7 +69,7 @@ var Panel = React.createClass({
     if (this.props.id > -1) {
       var plinks = this.props.panels[this.props.id].links;
       for (var i = 0; i < plinks.length; ++i)
-        runnables.push(<Runnable id={i} contextCallback={this.onContext.bind(this)} name={plinks[i].name} uri={plinks[i].uri}/>);
+        runnables.push(<Runnable id={i} contextCallback={this.onContext.bind(this)} data={plinks[i]}/>);
     }
     return (
       <div className={"panel"} style={_style} onDragOver={this.onDrag} onDragLeave={this.onDrag} onDrop={this.onDrop}>{runnables}</div>

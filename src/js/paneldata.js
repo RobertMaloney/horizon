@@ -2,6 +2,7 @@ var fs = require("fs");
 var remote = require("remote");
 var Menu = remote.require("menu");
 var ws = require("../lib/windows-shortcuts/lib/windows-shortcuts.js");
+var ie = require("../lib/iconextractor/iconextractor.js");
 
 var PanelData = function(name) {
   this.name = name;
@@ -9,7 +10,7 @@ var PanelData = function(name) {
 }
 
 PanelData.prototype.addLink = function(config) {
-  this.links.push({name: config.name, uri: config.uri});
+  this.links.push(config);
   return true;
 }
 
@@ -27,9 +28,14 @@ PanelData.prototype.addFileByEvent = function(evt, callback) {
   var file = evt.dataTransfer.files[0];
   var _AL = this.addLink.bind(this);
   parseConfig(file.path, function(err,data) {
-    if (!err)
-      _AL(data);
-    callback(!err);
+    if (!err) {
+      ie.extractIcon(data.uri, data.name, function(error, location) {
+        if (!error)
+          data.imageuri = location;
+        _AL(data);
+        callback(!err);
+      });
+    }
   });
 }
 
